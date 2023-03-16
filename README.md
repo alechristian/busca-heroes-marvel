@@ -24,3 +24,4 @@ https://developer.marvel.com/
 - <a>Flutter Modular</a>
 - <a>Dio</a>
 - <a>ChangeNotifier</a>
+- <a>Arquitetura MVC</a>
