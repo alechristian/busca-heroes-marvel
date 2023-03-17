@@ -17,8 +17,8 @@ class HomeController extends ChangeNotifier {
   ModelPersonagensMarvel? buscaPersonagensRetorno;
 
   // //! Buscar personagem da lista
-  List<Character> personagensFiltrados = [];
-  List<Character> personagens = [];
+  List<Character?> personagensFiltrados = [];
+  List<Character?> personagens = [];
 
   buscaPersonagemLista() {
     if (nomePersonagemBuscar.text.isEmpty) {
@@ -51,7 +51,6 @@ class HomeController extends ChangeNotifier {
       personagens = buscaPersonagensRetorno!.data.results;
       personagensFiltrados = personagens;
 
-      // Atualiza o número total de páginas
       _totalPaginas = (personagensFiltrados.length / 4).ceil();
 
       state = modelState.success;
@@ -77,7 +76,7 @@ class HomeController extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<Character> getPersonagensPagina(int pagina) {
+  List<Character?>? getPersonagensPagina(int pagina) {
     notifyListeners();
     final startIndex = (pagina - 1) * 4;
     final endIndex = startIndex + 4;

@@ -23,6 +23,7 @@ class HomeRepository {
       "apikey": Env.publicKey,
       "ts": timestamp,
       "hash": textToMd5(hash),
+      "limit": 100
     };
     try {
       Response response = await dio.get(

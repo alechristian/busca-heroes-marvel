@@ -120,12 +120,12 @@ class _HomePageState extends State<HomePage> {
                                       itemCount: controller
                                           .getPersonagensPagina(
                                               controller.paginaAtual)
-                                          .length,
+                                          ?.length,
                                       // itemCount: 4,
                                       itemBuilder: (context, index) {
                                         final personagem =
                                             controller.getPersonagensPagina(
-                                                controller.paginaAtual)[index];
+                                                controller.paginaAtual)?[index];
                                         return ListTile(
                                           title: Container(
                                             decoration: BoxDecoration(
@@ -155,7 +155,7 @@ class _HomePageState extends State<HomePage> {
                                                                 .circular(10),
                                                       ),
                                                       child: Image.network(
-                                                          '${personagem.thumbnailUrl}'),
+                                                          '${personagem?.thumbnailUrl}'),
                                                     ),
                                                   ),
                                                   const SizedBox(
@@ -164,7 +164,7 @@ class _HomePageState extends State<HomePage> {
                                                   Container(
                                                     width: widthTela * 0.6,
                                                     child: Text(
-                                                      "${personagem.name}",
+                                                      "${personagem?.name}",
                                                       style: const TextStyle(
                                                           fontSize: 20,
                                                           overflow: TextOverflow
@@ -191,15 +191,13 @@ class _HomePageState extends State<HomePage> {
               child: BottomNavigationBar(
                 elevation: 0.0,
                 iconSize: 60,
+                selectedItemColor: null,
                 currentIndex: controller.paginaAtual,
                 onTap: (index) {
-                  if (index - 1 == 0 && controller.paginaAtual > 0) {
+                  if (index == 0) {
                     controller.setPaginaAtual(controller.paginaAtual - 1);
-                  } else if ((index - 1) == 1 &&
-                      controller.paginaAtual < controller.totalPaginas - 1) {
+                  } else if (index == 4) {
                     controller.setPaginaAtual(controller.paginaAtual + 1);
-                  } else if ((index - 1) >= 2 && (index - 1) < 5) {
-                    controller.setPaginaAtual(index - 2);
                   }
                 },
                 unselectedItemColor: AppColors.primaryRed,
@@ -217,8 +215,8 @@ class _HomePageState extends State<HomePage> {
                           color: AppColors.primaryRed,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Text('1'),
+                            children: [
+                              Text('${controller.paginaAtual}'),
                             ],
                           )),
                     ),
@@ -233,8 +231,8 @@ class _HomePageState extends State<HomePage> {
                           color: AppColors.primaryRed,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Text('2'),
+                            children: [
+                              Text('${controller.paginaAtual + 1}'),
                             ],
                           )),
                     ),
@@ -249,8 +247,8 @@ class _HomePageState extends State<HomePage> {
                           color: AppColors.primaryRed,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Text('3'),
+                            children: [
+                              Text('${controller.paginaAtual + 2}'),
                             ],
                           )),
                     ),
