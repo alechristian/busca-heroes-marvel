@@ -51,7 +51,7 @@ class HomeController extends ChangeNotifier {
       personagens = buscaPersonagensRetorno!.data.results;
       personagensFiltrados = personagens;
 
-      _totalPaginas = (personagensFiltrados.length / 4).ceil();
+      // _totalPaginas = (personagensFiltrados.length / 4).ceil();
 
       state = modelState.success;
     } on DioError {
@@ -67,9 +67,6 @@ class HomeController extends ChangeNotifier {
 
   //! Paginação
   int paginaAtual = 1;
-
-  int _totalPaginas = 1;
-  int get totalPaginas => _totalPaginas;
 
   void setPaginaAtual(int index) {
     paginaAtual = index;

@@ -1,18 +1,30 @@
+import 'package:code_hero_project/app/models/model_retorno_personagens.dart';
 import 'package:code_hero_project/app/pages/home/home_controller.dart';
 import 'package:code_hero_project/utils/enums/model_state.dart';
 import 'package:flutter/material.dart';
 import 'package:code_hero_project/const/colors.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
-final controller = HomeController();
-
 class _HomePageState extends State<HomePage> {
+  final controller = HomeController();
+
+  @override
+  void initState() {
+    Future.delayed(Duration.zero, () {
+      controller
+          .buscaPersonagens()
+          ?.whenComplete(() => controller.buscaPersonagemLista());
+    });
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     var heightTela = MediaQuery.of(context).size.height;
@@ -118,12 +130,12 @@ class _HomePageState extends State<HomePage> {
                                           const AlwaysScrollableScrollPhysics(),
                                       shrinkWrap: true,
                                       itemCount: controller
-                                          .getPersonagensPagina(
-                                              controller.paginaAtual)
-                                          ?.length,
-                                      // itemCount: 4,
+                                              .getPersonagensPagina(
+                                                  controller.paginaAtual)
+                                              ?.length ??
+                                          1,
                                       itemBuilder: (context, index) {
-                                        final personagem =
+                                        late Character? personagem =
                                             controller.getPersonagensPagina(
                                                 controller.paginaAtual)?[index];
                                         return ListTile(
@@ -154,8 +166,12 @@ class _HomePageState extends State<HomePage> {
                                                             BorderRadius
                                                                 .circular(10),
                                                       ),
-                                                      child: Image.network(
-                                                          '${personagem?.thumbnailUrl}'),
+                                                      child: personagem
+                                                                  ?.thumbnailUrl ==
+                                                              null
+                                                          ? CircularProgressIndicator()
+                                                          : Image.network(
+                                                              '${personagem?.thumbnailUrl}'),
                                                     ),
                                                   ),
                                                   const SizedBox(
@@ -163,15 +179,19 @@ class _HomePageState extends State<HomePage> {
                                                   ),
                                                   Container(
                                                     width: widthTela * 0.6,
-                                                    child: Text(
-                                                      "${personagem?.name}",
-                                                      style: const TextStyle(
-                                                          fontSize: 20,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          color: AppColors
-                                                              .primaryBlack),
-                                                    ),
+                                                    child: personagem?.name ==
+                                                            null
+                                                        ? CircularProgressIndicator()
+                                                        : Text(
+                                                            "${personagem?.name}",
+                                                            style: const TextStyle(
+                                                                fontSize: 20,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                color: AppColors
+                                                                    .primaryBlack),
+                                                          ),
                                                   ),
                                                 ],
                                               ),
@@ -189,11 +209,14 @@ class _HomePageState extends State<HomePage> {
             Padding(
               padding: const EdgeInsets.only(bottom: 8),
               child: BottomNavigationBar(
+                showSelectedLabels: true,
+                showUnselectedLabels: true,
                 elevation: 0.0,
                 iconSize: 60,
                 selectedItemColor: null,
                 currentIndex: controller.paginaAtual,
                 onTap: (index) {
+                  setState(() {});
                   if (index == 0) {
                     controller.setPaginaAtual(controller.paginaAtual - 1);
                   } else if (index == 4) {
@@ -265,13 +288,5 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
-  }
-
-  @override
-  void initState() {
-    controller
-        .buscaPersonagens()
-        ?.whenComplete(() => controller.buscaPersonagemLista());
-    super.initState();
   }
 }
