@@ -51,8 +51,6 @@ class HomeController extends ChangeNotifier {
       personagens = buscaPersonagensRetorno!.data.results;
       personagensFiltrados = personagens;
 
-      // _totalPaginas = (personagensFiltrados.length / 4).ceil();
-
       state = modelState.success;
     } on DioError {
       state = modelState.error;
